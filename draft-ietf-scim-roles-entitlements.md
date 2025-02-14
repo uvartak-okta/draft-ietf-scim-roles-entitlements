@@ -1,7 +1,7 @@
 ---
 title: "SCIM Roles and Entitlements Extension"
 abbrev: "SCIM Roles and Entitlements Extension"
-docname: draft-ietf-scim-roles-entitlements-00
+docname: draft-ietf-scim-roles-entitlements-latest
 category: std
 
 ipr: trust200902
