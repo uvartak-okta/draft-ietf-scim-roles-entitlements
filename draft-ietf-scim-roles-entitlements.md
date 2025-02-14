@@ -42,10 +42,6 @@ In order to allow for SCIM clients to avoid easily predictable errors when inter
 
 {::boilerplate bcp14-tagged}
 
-# IANA Considerations
-
-(To-Do)
-
 # Roles and Entitlements
 
 The Roles and Entitlements SCIM Extension consists of two new resource types, /Roles and /Entitlements, as well as accompanying ServiceProviderConfig details to advertise support for this extension.
@@ -575,6 +571,11 @@ Content-Type: application/scim+json
 
 ~~~
 --- back
+
+# IANA Considerations
+
+(To-Do)
+
 
 # Change Log
 
