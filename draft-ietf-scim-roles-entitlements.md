@@ -18,23 +18,23 @@ author:
     name: Danny Zollner
     organization: Microsoft
     email: zollnerd@microsoft.com
-    
 
-normative: 
 
-informative: 
+normative:
+
+informative:
 
 
 --- abstract
 
-The System for Cross-domain Identity Management (SCIM) protocol's schema RFC [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643) defines the complex core schema attributes "roles" and "entitlements". For both of these concepts, frequently only a predetermined set of values are accepted by a SCIM service provider. The values that are accepted may vary per customer or tenant based on customizable configuration in the service provider's application or based on other criteria such as what services have been purchased. This document defines an extension to the SCIM 2.0 standard to allow SCIM service providers to represent available data pertaining to roles and entitlements so that SCIM clients can consume this information and provide easier management of role and entitlement assignments. 
+The System for Cross-domain Identity Management (SCIM) protocol's schema RFC [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643) defines the complex core schema attributes "roles" and "entitlements". For both of these concepts, frequently only a predetermined set of values are accepted by a SCIM service provider. The values that are accepted may vary per customer or tenant based on customizable configuration in the service provider's application or based on other criteria such as what services have been purchased. This document defines an extension to the SCIM 2.0 standard to allow SCIM service providers to represent available data pertaining to roles and entitlements so that SCIM clients can consume this information and provide easier management of role and entitlement assignments.
 
 
 --- middle
 
 # Introduction
 
-The System for Cross-domain Identity Management (SCIM) protocol's schema RFC [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643) defines the complex core schema attributes "roles" and "entitlements". For both of these concepts, frequently only a predetermined set of values are accepted by a SCIM service provider. Available roles and entitlements may change based on a variety of factors, such as what features are enabled or what customizations have been made in a specific instance of a multi-tenant application. The core SCIM 2.0 RFC documents (RFC7642, RFC7643 and RFC 7644) do not provide a method for retrieving the available roles or entitlements as part of the SCIM 2.0 standard. 
+The System for Cross-domain Identity Management (SCIM) protocol's schema RFC [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643) defines the complex core schema attributes "roles" and "entitlements". For both of these concepts, frequently only a predetermined set of values are accepted by a SCIM service provider. Available roles and entitlements may change based on a variety of factors, such as what features are enabled or what customizations have been made in a specific instance of a multi-tenant application. The core SCIM 2.0 RFC documents (RFC7642, RFC7643 and RFC 7644) do not provide a method for retrieving the available roles or entitlements as part of the SCIM 2.0 standard.
 
 In order to allow for SCIM clients to avoid easily predictable errors when interacting with SCIM service providers, this document aims to provide a method for SCIM service providers to provide data on what roles and/or entitlements are available so that SCIM clients can consume this data to more efficiently manage resources between directories.
 
@@ -93,23 +93,23 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
 
             multipleEntitlementsSupported
                 A boolean type that indicates if the SCIM service
-                provider supports multiple values for the 
+                provider supports multiple values for the
                 "entitlements" attribute on the User resource.
                 REQUIRED.
 
             primarySupported
                 A boolean type that indicates if the SCIM service
                 provider supports the "primary" sub-attribute for
-                the "entitlements" attribute on the User resource. 
+                the "entitlements" attribute on the User resource.
                 REQUIRED.
 
             typeSupported
                 A boolean type that indicates if the SCIM service
                 provider supports the "type" sub-attribute for
-                the "entitlements" attribute on the User resource. 
+                the "entitlements" attribute on the User resource.
                 REQUIRED.
 
-            
+
 
 ## Roles Resource Schema
 
@@ -121,7 +121,7 @@ The following singular attributes are defined:
         The value of a role. REQUIRED.
 
     display
-        A human-readable name, primarily used for display purposes. 
+        A human-readable name, primarily used for display purposes.
         OPTIONAL.
 
     type
@@ -132,32 +132,32 @@ The following singular attributes are defined:
         in the SCIM service provider's system.  REQUIRED.
 
     limitedAssignmentsPermitted
-        A boolean type that indicates if a limited number of users may 
+        A boolean type that indicates if a limited number of users may
         be assigned this role. A value of false should be interpreted
-        as no numerical restriction on the number of users that may 
+        as no numerical restriction on the number of users that may
         hold this role. Other restrictions may exist.  RECOMMENDED.
 
     totalAssignmentsPermitted
-        An integer type that indicates how many users may be 
-        assigned this role, either directly or inherited.  
+        An integer type that indicates how many users may be
+        assigned this role, either directly or inherited.
         OPTIONAL, but RECOMMENDED if assignments are restricted
         to a certain number.
 
     totalAssignmentsUsed
         An integer type that indicates how many users are currently
-         assigned this role, either directly or inherited.  
-         OPTIONAL, but RECOMMENDED if assignments are restricted 
+         assigned this role, either directly or inherited.
+         OPTIONAL, but RECOMMENDED if assignments are restricted
          to a certain number.
 
 Additionally, the following multi-valued attributes are defined:
 
     containedBy
-        A list of "parent" roles that contain a superset of 
+        A list of "parent" roles that contain a superset of
         permissions including those granted by this role.
         OPTIONAL.
 
     contains
-        A list of "child" roles that this role grants the rights of.  
+        A list of "child" roles that this role grants the rights of.
         OPTIONAL.
 
 ## Entitlements Resource Schema
@@ -170,7 +170,7 @@ The following singular attributes are defined:
         The value of an entitlement. REQUIRED.
 
     display
-        A human-readable name, primarily used for display purposes. 
+        A human-readable name, primarily used for display purposes.
         OPTIONAL.
 
     type
@@ -182,33 +182,33 @@ The following singular attributes are defined:
 
     limitedAssignmentsPermitted
         A boolean type that indicates if a limited number of users may
-        be assigned this entitlement. A value of false should be 
+        be assigned this entitlement. A value of false should be
         interpreted as no numerical restriction on the number of users
         that may hold this entitlement. Other restrictions may exist.
         RECOMMENDED.
 
     totalAssignmentsPermitted
-        An integer type that indicates how many users may be assigned 
+        An integer type that indicates how many users may be assigned
         this entitlement, either directly or inherited.  OPTIONAL, but
         RECOMMENDED if limitedAssignmentsPermitted is true.
 
     totalAssignmentsUsed
-        An integer type that indicates how many users are currently 
-        assigned this entitlement, either directly or inherited.  
+        An integer type that indicates how many users are currently
+        assigned this entitlement, either directly or inherited.
         OPTIONAL, but RECOMMENDED if limitedAssignmentsPermitted is true.
 
-Additionally, the following multi-valued attributes are defined: 
-    
+Additionally, the following multi-valued attributes are defined:
+
     containedBy
-        A list of "parent" entitlements that contain a superset of 
-        permissions including those granted by this entitlement.  
+        A list of "parent" entitlements that contain a superset of
+        permissions including those granted by this entitlement.
         OPTIONAL.
 
     contains
-        A list of "child" entitlements that this entitlement grants 
+        A list of "child" entitlements that this entitlement grants
         the rights of.  OPTIONAL.
 
-Author's note: Above descriptions for contains and containedBy need work to make clearer, and probably an explanatory section as well. 
+Author's note: Above descriptions for contains and containedBy need work to make clearer, and probably an explanatory section as well.
 
 ## Sample Requests
 
@@ -250,7 +250,7 @@ Content-Type: application/scim+json
             "enabled":true
             "contains":["regional_lead"],
             "containedBy":["global_lead],
-            "limitedAssignmentsPermitted":false         
+            "limitedAssignmentsPermitted":false
         }
         {
             "value":"nw_regional_lead"
@@ -258,7 +258,7 @@ Content-Type: application/scim+json
             "enabled":true,
             "contains":[],
             "containedBy":["us_team_lead"],
-            "limitedAssignmentsPermitted":false                
+            "limitedAssignmentsPermitted":false
         },
     ]
 }
@@ -336,7 +336,7 @@ Content-Type: application/scim+json
     {
         "id" : "urn:ietf:params:scim:schemas:2.0:Roles",
         "name" : "Role",
-        "description" : "Roles available for use with the User 
+        "description" : "Roles available for use with the User
         resource's 'roles' attribute",
         "attributes" : [
             {
@@ -354,7 +354,7 @@ Content-Type: application/scim+json
                 "name" : "display",
                 "type" : "string",
                 "multiValued" : false,
-                "description" : "A human-readable name, primarily 
+                "description" : "A human-readable name, primarily
                 used for display purposes.",
                 "required" : false,
                 "caseExact" : false,
@@ -366,7 +366,7 @@ Content-Type: application/scim+json
                 "name" : "type",
                 "type" : "string",
                 "multiValued" : false,
-                "description" : "A label indicating the role's 
+                "description" : "A label indicating the role's
                 function.",
                 "required" : false,
                 "caseExact" : false,
@@ -382,7 +382,7 @@ Content-Type: application/scim+json
                 role is enabled and usable in the SCIM service
                 provider's system.",
                 "required" : true,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             },
@@ -391,11 +391,11 @@ Content-Type: application/scim+json
                 "type" : "string",
                 "multiValued" : true,
                 "description" : "A complex type that shows what other
-                 roles this role indirectly grants - values can be 
-                 considered the child role in a parent/child 
+                 roles this role indirectly grants - values can be
+                 considered the child role in a parent/child
                  relationship.",
                 "required" : false,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             },
@@ -405,10 +405,10 @@ Content-Type: application/scim+json
                 "multiValued" : true,
                 "description" : "A complex type that shows what other
                  roles grant this role indirectly - values can be
-                  considered the parent role in a parent/child 
+                  considered the parent role in a parent/child
                   relationship.",
                 "required" : false,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             },
@@ -417,10 +417,10 @@ Content-Type: application/scim+json
                 "type" : "boolean",
                 "multiValued" : false,
                 "description" : "A boolean type that indicates if the
-                role has a numerical limit to how many users it may 
+                role has a numerical limit to how many users it may
                 be assigned.",
                 "required" : false,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             },
@@ -428,21 +428,21 @@ Content-Type: application/scim+json
                 "name" : "totalAssignmentsPermitted",
                 "type" : "integer",
                 "multiValued" : false,
-                "description" : "An integer that specifies how many 
+                "description" : "An integer that specifies how many
                 resources in total may be granted this role.",
                 "required" : true,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
-                "returned" : "default" 
+                "returned" : "default"
             },
             {
                 "name" : "totalAssignmentsUsed",
                 "type" : "integer",
                 "multiValued" : false,
-                "description" : "An integer that specifies how many 
+                "description" : "An integer that specifies how many
                 resources in total have been granted this role.",
                 "required" : true,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             }
@@ -458,7 +458,7 @@ Content-Type: application/scim+json
     {
         "id" : "urn:ietf:params:scim:schemas:2.0:Entitlements",
         "name" : "Entitlement",
-        "description" : "Entitlements available for use with the User 
+        "description" : "Entitlements available for use with the User
         resource's 'entitlements' attribute",
         "attributes" : [
             {
@@ -476,7 +476,7 @@ Content-Type: application/scim+json
                 "name" : "display",
                 "type" : "string",
                 "multiValued" : false,
-                "description" : "A human-readable name, primarily 
+                "description" : "A human-readable name, primarily
                 used for display purposes.",
                 "required" : false,
                 "caseExact" : false,
@@ -504,7 +504,7 @@ Content-Type: application/scim+json
                 entitlement is enabled and usable in the SCIM service
                 provider's system.",
                 "required" : true,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             },
@@ -513,11 +513,11 @@ Content-Type: application/scim+json
                 "type" : "string",
                 "multiValued" : true,
                 "description" : "A complex type that shows what other
-                 entitlements this entitlement indirectly grants - 
-                 values can be considered the child entitlement in a 
+                 entitlements this entitlement indirectly grants -
+                 values can be considered the child entitlement in a
                  parent/child relationship.",
                 "required" : false,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             },
@@ -525,12 +525,12 @@ Content-Type: application/scim+json
                 "name" : "containedBy",
                 "type" : "string",
                 "multiValued" : true,
-                "description" : "A complex type that shows what other 
-                entitlements grant this entitlement indirectly - 
-                values can be considered the parent entitlement in a 
+                "description" : "A complex type that shows what other
+                entitlements grant this entitlement indirectly -
+                values can be considered the parent entitlement in a
                 parent/child relationship.",
                 "required" : false,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             },
@@ -539,10 +539,10 @@ Content-Type: application/scim+json
                 "type" : "boolean",
                 "multiValued" : false,
                 "description" : "A boolean type that indicates if the
-                entitlement has a numerical limit to how many users 
+                entitlement has a numerical limit to how many users
                 it may be assigned.",
                 "required" : false,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             },
@@ -550,22 +550,22 @@ Content-Type: application/scim+json
                 "name" : "totalAssignmentsPermitted",
                 "type" : "integer",
                 "multiValued" : false,
-                "description" : "An integer that specifies how many 
+                "description" : "An integer that specifies how many
                 resources in total may be granted this entitlement.",
                 "required" : true,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
-                "returned" : "default" 
+                "returned" : "default"
             },
             {
                 "name" : "totalAssignmentsUsed",
                 "type" : "integer",
                 "multiValued" : false,
-                "description" : "An integer that specifies how many 
-                resources in total have been granted this 
+                "description" : "An integer that specifies how many
+                resources in total have been granted this
                 entitlement.",
                 "required" : true,
-                "caseExact" : false, 
+                "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default"
             }
@@ -578,7 +578,7 @@ Content-Type: application/scim+json
 
 # Change Log
 
-v00 - December 2022 - Adopted by SCIM WG. 
+v00 - December 2022 - Adopted by SCIM WG.
 
 
 # Acknowledgments
