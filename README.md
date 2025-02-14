@@ -1,4 +1,4 @@
-# Cursor-based Pagination of SCIM Resources
+# SCIM Roles and Entitlements Extension
 
 This is the working area for the IETF [SCIM Working Group](https://datatracker.ietf.org/wg/scim/documents/) Internet-Draft, "SCIM Roles and Entitlements Extension".
 
