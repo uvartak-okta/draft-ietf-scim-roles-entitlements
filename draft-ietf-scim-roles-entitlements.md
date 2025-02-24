@@ -109,9 +109,8 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
 
 ## Roles Resource Schema
 
-The /Roles resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "roles" in [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643), as well as an additional "supported" attribute so that SCIM service providers can indicate if the role is currently enabled and intended for use in their service.
+The /Roles resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "roles" in [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643), as well as an additional "supported" attribute so that SCIM service providers can indicate if the role is currently enabled and intended for use in their service. The following singular attributes are defined:
 
-The following singular attributes are defined:
     id
       A unique identifier for the role as defined by the service
       provider.  If present, each representation of the resource MUST include a
@@ -228,6 +227,7 @@ Author's note: Above descriptions for contains and containedBy need work to make
 
 #### <base>/scim/v2/ResourceTypes
 #### Sample Role and entitlement resourceTypes
+```
 [{
     "schemas":["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
     "id": "Role",
@@ -266,19 +266,18 @@ Author's note: Above descriptions for contains and containedBy need work to make
            "resourceType": "ResourceType"
          }
 }]
-
+```
 #### Important:
 #### root schema are urn:ietf:params:scim:schemas:core:1.0:Role , urn:ietf:params:scim:schemas:core:1.0:Entitlement.
 #### schemaExtensions denote the specific schema extensions for service provider with urns:
 #### urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample, urn:isvname:scim:schemas:extension:appname:1.0:License , etc.
-
-
-Note that identical schema extensions for Roles and Entitlements can be added to group resource type by service providers. 
+#### Note that identical schema extensions for Roles and Entitlements can be added to group resource type by service providers. 
 
 #### Schema samples
 #### <base>/scim/v2/Schemas/urn:ietf:params:scim:schemas:core:1.0:Role
 
 #### Sample schema for a Role property
+```
 {
     "id":"urn:okta:schemas:core:1.0:Role",
     "name":"Role",
@@ -352,10 +351,11 @@ Note that identical schema extensions for Roles and Entitlements can be added to
         }
     ]
 }
-
+```
 
 #### <base>/scim/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:RoleExample
 #### Sample schema extension for a Role property
+```
 {
     "id":"urn:isvname:scim:schemas:extension:appname:1.0:RoleExample",
     "name":"RoleExample",
@@ -378,10 +378,11 @@ Note that identical schema extensions for Roles and Entitlements can be added to
     "resourceType": "schema",
     "location":"/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:RoleExample"
 }
-
+```
 
 #### <base>/scim/v2/Schemas/urn:okta:scim:schemas:core:1.0:Entitlement
 #### Sample schema for entitlement property
+```
 {
     "id":"urn:okta:schemas:core:1.0:Entitlement",
     "name":"Entitlement",
@@ -455,10 +456,10 @@ Note that identical schema extensions for Roles and Entitlements can be added to
         }
     ]
 }
-
+```
 #### <base>/scim/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:License
 #### Sample schema extension for an Entitlement property
-
+```
 {
     "id":"urn:isvname:scim:schemas:extension:appname:1.0:License",
     "name":"License",
@@ -481,12 +482,13 @@ Note that identical schema extensions for Roles and Entitlements can be added to
     "resourceType": "schema",
     "location":"/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:License"
 }
-
+```
 
 
 #### Sample schema response
 #### Retrieving all roles
 #### GET /Roles
+```
 {
     "schemas":["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
     "totalResults":"3",
@@ -537,8 +539,9 @@ Note that identical schema extensions for Roles and Entitlements can be added to
         }
     ]
 }
-
+```
 #### Retrieving all entitlements
+```
 {
     "schemas":["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
     "totalResults":"5",
@@ -618,9 +621,9 @@ Note that identical schema extensions for Roles and Entitlements can be added to
         }
     ]
 }
-
+```
 #### Sample user representation with role and entitlement
-
+```
 {
     "schemas":
       ["urn:ietf:params:scim:schemas:core:2.0:User",
@@ -777,5 +780,5 @@ Note that identical schema extensions for Roles and Entitlements can be added to
   "https://example.com/v2/Users/2819c223-7f76-453a-919d-413861904646"
     }
   }
-
+```
 
