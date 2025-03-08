@@ -219,14 +219,10 @@ Additionally, the following multi-valued attributes are defined:
         A list of "child" entitlements that this entitlement grants
         the rights of.  OPTIONAL.
 
-Author's note: Above descriptions for contains and containedBy need work to make clearer, and probably an explanatory section as well.
-
-## Sample Requests
-
-### ResourceType example
+## Resource Type Representation
 
 #### <base>/scim/v2/ResourceTypes
-#### Sample Role and entitlement resourceTypes
+#### Sample Role and entitlement resourceTypes with permission and license as custom schema extensions
 ```
 [{
     "schemas":["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
@@ -262,7 +258,7 @@ Author's note: Above descriptions for contains and containedBy need work to make
            }
          ],
          "meta": {
-           "location": "https://example.com/v2/ResourceTypes/License",
+           "location": "https://example.com/v2/ResourceTypes/Entitlement",
            "resourceType": "ResourceType"
          }
 }]
@@ -271,7 +267,6 @@ Author's note: Above descriptions for contains and containedBy need work to make
 #### root schema are urn:ietf:params:scim:schemas:core:1.0:Role , urn:ietf:params:scim:schemas:core:1.0:Entitlement.
 #### schemaExtensions denote the specific schema extensions for service provider with urns:
 #### urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample, urn:isvname:scim:schemas:extension:appname:1.0:License , etc.
-#### Note that identical schema extensions for Roles and Entitlements can be added to group resource type by service providers. 
 
 #### Schema samples
 #### <base>/scim/v2/Schemas/urn:ietf:params:scim:schemas:core:1.0:Role
@@ -358,7 +353,7 @@ Author's note: Above descriptions for contains and containedBy need work to make
 ```
 {
     "id":"urn:isvname:scim:schemas:extension:appname:1.0:RoleExample",
-    "name":"RoleExample",
+    "name":"P",
     "description":"RoleExample schema extension",
     "attributes":[
         {
@@ -485,7 +480,7 @@ Author's note: Above descriptions for contains and containedBy need work to make
 ```
 
 
-#### Sample schema response
+### Sample schema response
 #### Retrieving all roles
 #### GET /Roles
 ```
