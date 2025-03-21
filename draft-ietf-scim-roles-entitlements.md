@@ -230,7 +230,7 @@ Additionally, the following multi-valued attributes are defined:
 
 ## Resource Type Representation
 
-### <base>/scim/v2/ResourceTypes
+### `<base>/scim/v2/ResourceTypes`
 
 Sample Role and entitlement resourceTypes with permission and license as custom schema extensions
 
@@ -283,7 +283,7 @@ The root schema are `urn:ietf:params:scim:schemas:core:1.0:Role` and `urn:ietf:p
 
 ### Schema samples
 
-#### <base>/scim/v2/Schemas/urn:ietf:params:scim:schemas:core:1.0:Role
+#### `<base>/scim/v2/Schemas/urn:ietf:params:scim:schemas:core:1.0:Role`
 
 Sample schema for a Role property
 
@@ -361,7 +361,7 @@ Sample schema for a Role property
         ]
     }
 
-#### <base>/scim/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:RoleExample
+#### `<base>/scim/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:RoleExample`
 
 Sample schema extension for a Role property
 
@@ -389,7 +389,7 @@ Sample schema extension for a Role property
         }
     }
 
-#### <base>/scim/v2/Schemas/urn:ietf:scim:schemas:core:1.0:Entitlement
+#### `<base>/scim/v2/Schemas/urn:ietf:scim:schemas:core:1.0:Entitlement`
 
 Sample schema for entitlement property
 
@@ -467,7 +467,7 @@ Sample schema for entitlement property
         ]
     }
 
-#### <base>/scim/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:License
+#### `<base>/scim/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:License`
 
 Sample schema extension for an Entitlement property
 
