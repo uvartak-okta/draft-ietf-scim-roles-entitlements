@@ -180,10 +180,10 @@ The following singular attributes are defined:
     id
         A unique identifier for the entitlement as defined by the service
         provider.  If present, each representation of the resource MUST include a
-        non-empty "id" value. It MUST be a stable, non-reassignable 
-        identifier that does not change when the same resource is 
-        returned in subsequent requests.  The value of the "id" attribute 
-        is always issued by the service provider and MUST NOT be specified 
+        non-empty "id" value. It MUST be a stable, non-reassignable
+        identifier that does not change when the same resource is
+        returned in subsequent requests.  The value of the "id" attribute
+        is always issued by the service provider and MUST NOT be specified
         by the client. This attribute is OPTIONAL.
 
     value
