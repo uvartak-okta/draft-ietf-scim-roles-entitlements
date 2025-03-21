@@ -44,7 +44,7 @@ In order to allow for SCIM clients to avoid easily predictable errors when inter
 
 # Roles and Entitlements
 
-The Roles and Entitlements SCIM Extension consists of two new resource types, /Roles and /Entitlements, as well as accompanying ServiceProviderConfig details to advertise support for this extension.
+The Roles and Entitlements SCIM Extension consists of two new resource types, /Roles and /Entitlements, as well as accompanying ServiceProviderConfig details to advertise support for this extension. In addition to the new resource types, service providers can use schema extensions to publish custom entitlements.
 
 
 ## ServiceProviderConfig Extension
@@ -58,7 +58,7 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
             A complex type that specifies configuration options
             related to the Roles resource type. REQUIRED.
 
-            enabled
+            supported
                 A boolean type that indicates if the SCIM service
                 provider supports the /Roles endpoint defined
                 in this extension. REQUIRED.
@@ -66,23 +66,23 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
             multipleRolesSupported
                 A boolean type that indicates if the SCIM service
                 provider supports multiple values for the "roles"
-                attribute on the User resource. REQUIRED.
+                attribute on the User resource. OPTIONAL.
 
             primarySupported
                 A boolean type that indicates if the SCIM service
                 provider supports the "primary" sub-attribute for
-                the "roles" attribute on the User resource. REQUIRED.
+                the "roles" attribute on the User resource. OPTIONAL.
 
             typeSupported
                 A boolean type that indicates if the SCIM service
                 provider supports the "type" sub-attribute for
-                the "roles" attribute on the User resource. REQUIRED.
+                the "roles" attribute on the User resource. OPTIONAL.
 
         entitlements
             A complex type that specifies configuration options
             related to the Entitlements resource type. REQUIRED.
 
-            enabled
+            supported
                 A boolean type that indicates if the SCIM service
                 provider supports the /Entitlements endpoint defined
                 in this extension. REQUIRED.
@@ -91,27 +91,34 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
                 A boolean type that indicates if the SCIM service
                 provider supports multiple values for the
                 "entitlements" attribute on the User resource.
-                REQUIRED.
+                OPTIONAL.
 
             primarySupported
                 A boolean type that indicates if the SCIM service
                 provider supports the "primary" sub-attribute for
                 the "entitlements" attribute on the User resource.
-                REQUIRED.
+                OPTIONAL.
 
             typeSupported
                 A boolean type that indicates if the SCIM service
                 provider supports the "type" sub-attribute for
                 the "entitlements" attribute on the User resource.
-                REQUIRED.
+                OPTIONAL.
 
 
 
 ## Roles Resource Schema
 
-The /Roles resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "roles" in [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643), as well as an additional "Enabled" attribute so that SCIM service providers can indicate if the role is currently enabled and intended for use in their service.
+The /Roles resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "roles" in [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643), as well as an additional "supported" attribute so that SCIM service providers can indicate if the role is currently enabled and intended for use in their service. The following singular attributes are defined:
 
-The following singular attributes are defined:
+    id
+      A unique identifier for the role as defined by the service
+      provider.  If present, each representation of the resource MUST include a
+      non-empty "id" value. It MUST be a stable, non-reassignable 
+      identifier that does not change when the same resource is 
+      returned in subsequent requests.  The value of the "id" attribute 
+      is always issued by the service provider and MUST NOT be specified 
+      by the client. This attribute is OPTIONAL.
 
     value
         The value of a role. REQUIRED.
@@ -123,15 +130,15 @@ The following singular attributes are defined:
     type
         A label indicating the role's function.  OPTIONAL
 
-    enabled
-        A boolean type that indicates if the role is enabled and usable
+    supported
+        A boolean type that indicates if the role is supported and usable
         in the SCIM service provider's system.  REQUIRED.
 
     limitedAssignmentsPermitted
         A boolean type that indicates if a limited number of users may
         be assigned this role. A value of false should be interpreted
         as no numerical restriction on the number of users that may
-        hold this role. Other restrictions may exist.  RECOMMENDED.
+        hold this role. Other restrictions may exist.  OPTIONAL.
 
     totalAssignmentsPermitted
         An integer type that indicates how many users may be
@@ -158,10 +165,18 @@ Additionally, the following multi-valued attributes are defined:
 
 ## Entitlements Resource Schema
 
-The /Entitlements resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "entitlements" in [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643), as well as an additional "Enabled" attribute so that SCIM service providers can indicate if the entitlement is currently enabled and intended for use in their service.
+The /Entitlements resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "entitlements" in [RFC7643](https://datatracker.ietf.org/doc/html/rfc7643), as well as an additional "supported" attribute so that SCIM service providers can indicate if the entitlement is currently enabled and intended for use in their service.
 
 The following singular attributes are defined:
 
+    id
+        A unique identifier for the entitlement as defined by the service
+        provider.  If present, each representation of the resource MUST include a
+        non-empty "id" value. It MUST be a stable, non-reassignable 
+        identifier that does not change when the same resource is 
+        returned in subsequent requests.  The value of the "id" attribute 
+        is always issued by the service provider and MUST NOT be specified 
+        by the client. This attribute is OPTIONAL.
     value
         The value of an entitlement. REQUIRED.
 
@@ -172,7 +187,7 @@ The following singular attributes are defined:
     type
         A label indicating the entitlement's function. OPTIONAL.
 
-    enabled
+    supported
         A boolean type that indicates if the entitlement is enabled
         and usable in the SCIM service provider's system. REQUIRED.
 
@@ -204,385 +219,560 @@ Additionally, the following multi-valued attributes are defined:
         A list of "child" entitlements that this entitlement grants
         the rights of.  OPTIONAL.
 
-Author's note: Above descriptions for contains and containedBy need work to make clearer, and probably an explanatory section as well.
+## Resource Type Representation
 
-## Sample Requests
+#### <base>/scim/v2/ResourceTypes
+#### Sample Role and entitlement resourceTypes with permission and license as custom schema extensions
+```
+[{
+    "schemas":["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
+    "id": "Role",
+    "name": "Role",
+    "endpoint": "/Roles",
+    "description": "Role",
+    "schema": "urn:ietf:params:scim:schemas:core:1.0:Role",
+    "schemaExtensions": [
+       {
+         "schema":
+           "urn:<isvname>:scim:schemas:extension:appname:1.0:RoleExample",
+         "required": true
+       }
+     ],
+     "meta": {
+       "location": "https://example.com/v2/ResourceTypes/Role",
+       "resourceType": "ResourceType"
+     }
+    },
+    {
+        "schemas":["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
+        "id": "License",
+        "name": "License",
+        "endpoint": "/Licenses",
+        "description": "License",
+        "schema": "urn:ietf:params:scim:schemas:core:1.0:Entitlement",
+        "schemaExtensions": [
+           {
+             "schema":
+               "urn:<isvname>:scim:schemas:extension:appname:1.0:License",
+             "required": true
+           }
+         ],
+         "meta": {
+           "location": "https://example.com/v2/ResourceTypes/Entitlement",
+           "resourceType": "ResourceType"
+         }
+}]
+```
+#### Important:
+#### root schema are urn:ietf:params:scim:schemas:core:1.0:Role , urn:ietf:params:scim:schemas:core:1.0:Entitlement.
+#### schemaExtensions denote the specific schema extensions for service provider with urns:
+#### urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample, urn:isvname:scim:schemas:extension:appname:1.0:License , etc.
 
-### Retrieving all roles
+#### Schema samples
+#### <base>/scim/v2/Schemas/urn:ietf:params:scim:schemas:core:1.0:Role
 
-#### Request
-~~~
-GET /Roles
-Host: example.com
-Accept: application/scim+json
-Authorization: Bearer 123456abcd
-~~~
+#### Sample schema for a Role property
+```
+{
+    "id":"urn:okta:schemas:core:1.0:Role",
+    "name":"Role",
+    "description":"Role schema",
+    "attributes":[
+        {
+            "name" : "id",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "The unique id for role.",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "value",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "Role value.",
+            "required" : true,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "displaye",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "display name for role.",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "type",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "Role type.",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "supported",
+            "type" : "boolean",
+            "multiValued" : false,
+            "description" : "supported value for role",
+            "required" : true,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "type",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "The unique id for role.",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        }
+    ]
+}
+```
 
-#### Response
+#### <base>/scim/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:RoleExample
+#### Sample schema extension for a Role property
+```
+{
+    "id":"urn:isvname:scim:schemas:extension:appname:1.0:RoleExample",
+    "name":"P",
+    "description":"RoleExample schema extension",
+    "attributes":[
+        {
+            "name" : "permission",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "custom property in role",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readwrite",
+            "returned" : "default",
+            "uniqueness" : "none"
+        }
+    ]
+},
+"meta": {
+    "resourceType": "schema",
+    "location":"/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:RoleExample"
+}
+```
 
-~~~
-HTTP/1.1 200 OK
-Content-Type: application/scim+json
+#### <base>/scim/v2/Schemas/urn:okta:scim:schemas:core:1.0:Entitlement
+#### Sample schema for entitlement property
+```
+{
+    "id":"urn:okta:schemas:core:1.0:Entitlement",
+    "name":"Entitlement",
+    "description":"Entitlement schema",
+    "attributes":[
+        {
+            "name" : "id",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "The unique id for Entitlement.",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "value",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "Role value.",
+            "required" : true,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "displaye",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "display name for role.",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "type",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "Role type.",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "supported",
+            "type" : "boolean",
+            "multiValued" : false,
+            "description" : "supported value for role",
+            "required" : true,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        },
+        {
+            "name" : "type",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "The unique id for role.",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readOnly",
+            "returned" : "default",
+            "uniqueness" : "none"
+        }
+    ]
+}
+```
+#### <base>/scim/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:License
+#### Sample schema extension for an Entitlement property
+```
+{
+    "id":"urn:isvname:scim:schemas:extension:appname:1.0:License",
+    "name":"License",
+    "description":"License entitlement schema extension",
+    "attributes":[
+        {
+            "name" : "licensecount",
+            "type" : "string",
+            "multiValued" : false,
+            "description" : "custom property in license entitlement",
+            "required" : false,
+            "caseExact" : false,
+            "mutability" : "readwrite",
+            "returned" : "default",
+            "uniqueness" : "none"
+        }
+    ]
+},
+"meta": {
+    "resourceType": "schema",
+    "location":"/v2/Schemas/urn:isvname:scim:schemas:extension:appname:1.0:License"
+}
+```
 
+
+### Sample schema response
+#### Retrieving all roles
+#### GET /Roles
+```
 {
     "schemas":["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
-    "totalResults":3",
+    "totalResults":"3",
     "itemsPerPage":100,
     "startIndex":1,
     "Resources":[
         {
-            "value":"global_lead"
-            "display":"Global Team Lead"
-            "enabled":true,
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:1.0:Role",
+                "urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample"
+            ],
+            "id":"rl3456",
+            "value":"global_lead",
+            "display":"Global Team Lead",
+            "urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample":{
+                "permission":"1"
+            },
             "contains":["teamlead"],
-            "containedBy":[],
-            "limitedAssignmentsPermitted":true,
-            "totalAssignmentsPermitted":5,
-            "totalAssignmentsUsed":4
+            "containedBy":[]
         },
         {
-            "value":"us_team_lead"
-            "display":"U.S. Team Lead"
-            "enabled":true
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:1.0:Role",
+                "urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample"
+            ],
+            "id":"rl5873",
+            "value":"us_team_lead",
+            "display":"U.S. Team Lead",
+            "urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample":{
+                "permission":"2"
+            },
             "contains":["regional_lead"],
-            "containedBy":["global_lead],
-            "limitedAssignmentsPermitted":false
-        }
-        {
-            "value":"nw_regional_lead"
-            "display":"Northwest Regional Lead"
-            "enabled":true,
-            "contains":[],
-            "containedBy":["us_team_lead"],
-            "limitedAssignmentsPermitted":false
+            "containedBy":["global_lead"]
         },
+        {
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:1.0:Role",
+                "urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample"
+            ],
+            "id":"rl9057",
+            "value":"nw_regional_lead",
+            "display":"Northwest Regional Lead",
+            "urn:<isvname>:scim:schemas:extension:<appname>:1.0:RoleExample":{
+                "permission":"1"
+            },
+            "contains":[],
+            "containedBy":["us_team_lead"]
+        }
     ]
 }
-~~~
-
-### Retrieving all entitlements
-
-#### Request
-~~~
-GET /Entitlements
-Host: example.com
-Accept: application/scim+json
-Authorization: Bearer 123456abcd
-~~~
-
-#### Response
-
-~~~
-HTTP/1.1 200 OK
-Content-Type: application/scim+json
-
+```
+#### Retrieving all entitlements
+```
 {
     "schemas":["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
-    "totalResults":5",
+    "totalResults":"5",
     "itemsPerPage":100,
     "startIndex":1,
     "Resources":[
         {
-            "value":"1"
-            "display":"Printing"
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:1.0:Entitlement",
+                "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License"
+            ],
+            "id":"en9057",
+            "value":"1",
+            "display":"Printing",
+            "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License":{
+                "licensecount":"10"
+            },
             "enabled":true,
             "contains":[],
-            "containedBy":["5"],
-            "limitedAssignmentsPermitted":false
+            "containedBy":["5"]
         },
         {
-            "value":"2"
-            "display":"Scanning"
-            "enabled":True
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:1.0:Entitlement",
+                "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License"
+            ],
+            "id":"en9907",
+            "value":"2",
+            "display":"Scanning",
+            "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License":{
+                "licensecount":"100"
+            },
             "contains":[],
-            "containedBy":["5"],
-            "limitedAssignmentsPermitted":false
+            "containedBy":["5"]
         },
         {
-            "value":"3"
-            "display":"Copying"
-            "enabled":True
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:1.0:Entitlement",
+                "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License"
+            ],
+            "id":"en38476",
+            "value":"3",
+            "display":"Copying",
+            "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License":{
+                "licensecount":"1000"
+            },
             "contains":[],
-            "containedBy":["5"],
-            "limitedAssignmentsPermitted":false
+            "containedBy":["5"]
         },
         {
-            "value":"4"
-            "display":"Collating"
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:1.0:Entitlement",
+                "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License"
+            ],
+            "id":"en2257",
+            "value":"4",
+            "display":"Collating",
+            "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License":{
+                "licensecount":"10"
+            },
             "contains":[],
-            "containedBy":["5"],
-            "limitedAssignmentsPermitted":false
+            "containedBy":["5"]
         },
         {
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:1.0:Entitlement",
+                "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License"
+            ],
+            "id":"en33097",
             "value":"5",
-            "display":"All Printer Permissions"
-            "enabled":true,
+            "display":"All Printer Permissions",
+            "urn:<isvname>:scim:schemas:extension:<appname>:1.0:License":{
+                "licensecount":"10"
+            },
             "contains":["1","2","3","4"],
-            "containedBy":[],
-            "limitedAssignmentsPermitted":false
+            "containedBy":[]
         }
     ]
 }
-~~~
-
-# Roles Schema BNF
-
-~~~
-[
-    {
-        "id" : "urn:ietf:params:scim:schemas:2.0:Roles",
-        "name" : "Role",
-        "description" : "Roles available for use with the User
-        resource's 'roles' attribute",
-        "attributes" : [
-            {
-                "name" : "value",
-                "type" : "string",
-                "multiValued" : false,
-                "description" : "The value of a role",
-                "required" : true,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default",
-                "uniqueness" : "server"
-            },
-            {
-                "name" : "display",
-                "type" : "string",
-                "multiValued" : false,
-                "description" : "A human-readable name, primarily
-                used for display purposes.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default",
-                "uniqueness" : "server"
-            },
-            {
-                "name" : "type",
-                "type" : "string",
-                "multiValued" : false,
-                "description" : "A label indicating the role's
-                function.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default",
-                "uniqueness" : "server"
-            },
-            {
-                "name" : "enabled",
-                "type" : "boolean",
-                "multiValued" : false,
-                "description" : "A boolean type that indicates if the
-                role is enabled and usable in the SCIM service
-                provider's system.",
-                "required" : true,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "contains",
-                "type" : "string",
-                "multiValued" : true,
-                "description" : "A complex type that shows what other
-                 roles this role indirectly grants - values can be
-                 considered the child role in a parent/child
-                 relationship.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "containedBy",
-                "type" : "string",
-                "multiValued" : true,
-                "description" : "A complex type that shows what other
-                 roles grant this role indirectly - values can be
-                  considered the parent role in a parent/child
-                  relationship.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "limitedAssignmentsPermitted",
-                "type" : "boolean",
-                "multiValued" : false,
-                "description" : "A boolean type that indicates if the
-                role has a numerical limit to how many users it may
-                be assigned.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-             {
-                "name" : "totalAssignmentsPermitted",
-                "type" : "integer",
-                "multiValued" : false,
-                "description" : "An integer that specifies how many
-                resources in total may be granted this role.",
-                "required" : true,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "totalAssignmentsUsed",
-                "type" : "integer",
-                "multiValued" : false,
-                "description" : "An integer that specifies how many
-                resources in total have been granted this role.",
-                "required" : true,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            }
-        ]
+```
+#### Sample user representation with role and entitlement
+```
+{
+    "schemas":
+      ["urn:ietf:params:scim:schemas:core:2.0:User",
+        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"],
+    "id": "2819c223-7f76-453a-919d-413861904646",
+    "externalId": "701984",
+    "userName": "bjensen@example.com",
+    "name": {
+      "formatted": "Ms. Barbara J Jensen, III",
+      "familyName": "Jensen",
+      "givenName": "Barbara",
+      "middleName": "Jane",
+      "honorificPrefix": "Ms.",
+      "honorificSuffix": "III"
+    },
+    "displayName": "Babs Jensen",
+    "nickName": "Babs",
+    "profileUrl": "https://login.example.com/bjensen",
+    "emails": [
+      {
+        "value": "bjensen@example.com",
+        "type": "work",
+        "primary": true
+      },
+      {
+        "value": "babs@jensen.org",
+        "type": "home"
+      }
+    ],
+    "addresses": [
+      {
+        "streetAddress": "100 Universal City Plaza",
+        "locality": "Hollywood",
+        "region": "CA",
+        "postalCode": "91608",
+        "country": "USA",
+        "formatted": "100 Universal City Plaza\nHollywood, CA 91608 USA",
+        "type": "work",
+        "primary": true
+      }, 
+      {
+        "streetAddress": "456 Hollywood Blvd",
+        "locality": "Hollywood",
+        "region": "CA",
+        "postalCode": "91608",
+        "country": "USA",
+        "formatted": "456 Hollywood Blvd\nHollywood, CA 91608 USA",
+        "type": "home"
+       }
+    ],
+    "phoneNumbers": [
+      {
+        "value": "555-555-5555",
+        "type": "work"
+      },
+      {
+        "value": "555-555-4444",
+        "type": "mobile"
+      }
+    ],
+    "ims": [
+      {
+        "value": "someaimhandle",
+        "type": "aim"
+      }
+    ],
+    "photos": [
+      {
+        "value":
+          "https://photos.example.com/profilephoto/72930000000Ccne/F",
+        "type": "photo"
+      },
+      {
+        "value":
+          "https://photos.example.com/profilephoto/72930000000Ccne/T",
+        "type": "thumbnail"
+      }
+    ],
+  
+    "userType": "Employee",
+    "title": "Tour Guide",
+    "preferredLanguage": "en-US",
+    "locale": "en-US",
+    "timezone": "America/Los_Angeles",
+    "active":true,
+    "password": "t1meMa$heen",
+    "groups": [
+      {
+        "value": "e9e30dba-f08f-4109-8486-d5c6a331660a",
+        "$ref": "../Groups/e9e30dba-f08f-4109-8486-d5c6a331660a",
+        "display": "Tour Guides"
+      },
+      {
+        "value": "fc348aa8-3835-40eb-a20b-c726e15c55b5",
+        "$ref": "../Groups/fc348aa8-3835-40eb-a20b-c726e15c55b5",
+        "display": "Employees"
+      },
+      {
+        "value": "71ddacd2-a8e7-49b8-a5db-ae50d0a5bfd7",
+        "$ref": "../Groups/71ddacd2-a8e7-49b8-a5db-ae50d0a5bfd7",
+        "display": "US Employees"
+      }
+    ],
+    "x509Certificates": [
+      {
+        "value":
+         "MIIDQzCCAqygAwIBAgICEAAwDQYJKoZIhvcNAQEFBQAwTjELMAkGA1UEBhMCVVMx
+          EzARBgNVBAgMCkNhbGlmb3JuaWExFDASBgNVBAoMC2V4YW1wbGUuY29tMRQwEgYD
+          VQQDDAtleGFtcGxlLmNvbTAeFw0xMTEwMjIwNjI0MzFaFw0xMjEwMDQwNjI0MzFa
+          MH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRQwEgYDVQQKDAtl
+          eGFtcGxlLmNvbTEhMB8GA1UEAwwYTXMuIEJhcmJhcmEgSiBKZW5zZW4gSUlJMSIw
+          IAYJKoZIhvcNAQkBFhNiamVuc2VuQGV4YW1wbGUuY29tMIIBIjANBgkqhkiG9w0B
+          AQEFAAOCAQ8AMIIBCgKCAQEA7Kr+Dcds/JQ5GwejJFcBIP682X3xpjis56AK02bc
+          1FLgzdLI8auoR+cC9/Vrh5t66HkQIOdA4unHh0AaZ4xL5PhVbXIPMB5vAPKpzz5i
+          PSi8xO8SL7I7SDhcBVJhqVqr3HgllEG6UClDdHO7nkLuwXq8HcISKkbT5WFTVfFZ
+          zidPl8HZ7DhXkZIRtJwBweq4bvm3hM1Os7UQH05ZS6cVDgweKNwdLLrT51ikSQG3
+          DYrl+ft781UQRIqxgwqCfXEuDiinPh0kkvIi5jivVu1Z9QiwlYEdRbLJ4zJQBmDr
+          SGTMYn4lRc2HgHO4DqB/bnMVorHB0CC6AV1QoFK4GPe1LwIDAQABo3sweTAJBgNV
+          HRMEAjAAMCwGCWCGSAGG+EIBDQQfFh1PcGVuU1NMIEdlbmVyYXRlZCBDZXJ0aWZp
+          Y2F0ZTAdBgNVHQ4EFgQU8pD0U0vsZIsaA16lL8En8bx0F/gwHwYDVR0jBBgwFoAU
+          dGeKitcaF7gnzsNwDx708kqaVt0wDQYJKoZIhvcNAQEFBQADgYEAA81SsFnOdYJt
+          Ng5Tcq+/ByEDrBgnusx0jloUhByPMEVkoMZ3J7j1ZgI8rAbOkNngX8+pKfTiDz1R
+          C4+dx8oU6Za+4NJXUjlL5CvV6BEYb1+QAEJwitTVvxB/A67g42/vzgAtoRUeDov1
+          +GFiBZ+GNF/cAYKcMtGcrs2i97ZkJMo="
+      }
+    ],
+    "entitlements":{
+        "value":"ent1234",
+        "display":"entitlement 1"
+    },
+    "roles":{
+        "value":"rl4567",
+        "display":"role 1"
+    },
+  
+    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+      "employeeNumber": "701984",
+      "costCenter": "4130",
+      "organization": "Universal Studios",
+      "division": "Theme Park",
+      "department": "Tour Operations",
+      "manager": {
+        "value": "26118915-6090-4610-87e4-49d8ca9f808d",
+        "$ref": "../Users/26118915-6090-4610-87e4-49d8ca9f808d",
+        "displayName": "John Smith"
+      }
+    },
+    "meta": {
+      "resourceType": "User",
+      "created": "2010-01-23T04:56:22Z",
+      "lastModified": "2011-05-13T04:42:34Z",
+      "version": "W\/\"3694e05e9dff591\"",
+      "location":
+  "https://example.com/v2/Users/2819c223-7f76-453a-919d-413861904646"
     }
-]
-~~~
+  }
 
-# Entitlements Schema BNF
-
-~~~
-[
-    {
-        "id" : "urn:ietf:params:scim:schemas:2.0:Entitlements",
-        "name" : "Entitlement",
-        "description" : "Entitlements available for use with the User
-        resource's 'entitlements' attribute",
-        "attributes" : [
-            {
-                "name" : "value",
-                "type" : "string",
-                "multiValued" : false,
-                "description" : "The value of an entitlement",
-                "required" : true,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default",
-                "uniqueness" : "server"
-            },
-            {
-                "name" : "display",
-                "type" : "string",
-                "multiValued" : false,
-                "description" : "A human-readable name, primarily
-                used for display purposes.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default",
-                "uniqueness" : "server"
-            },
-            {
-                "name" : "type",
-                "type" : "string",
-                "multiValued" : false,
-                "description" : "A label indicating the entitlement's
-                function.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default",
-                "uniqueness" : "server"
-            },
-            {
-                "name" : "enabled",
-                "type" : "boolean",
-                "multiValued" : false,
-                "description" : "A boolean type that indicates if the
-                entitlement is enabled and usable in the SCIM service
-                provider's system.",
-                "required" : true,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "contains",
-                "type" : "string",
-                "multiValued" : true,
-                "description" : "A complex type that shows what other
-                 entitlements this entitlement indirectly grants -
-                 values can be considered the child entitlement in a
-                 parent/child relationship.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "containedBy",
-                "type" : "string",
-                "multiValued" : true,
-                "description" : "A complex type that shows what other
-                entitlements grant this entitlement indirectly -
-                values can be considered the parent entitlement in a
-                parent/child relationship.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "limitedAssignmentsPermitted",
-                "type" : "boolean",
-                "multiValued" : false,
-                "description" : "A boolean type that indicates if the
-                entitlement has a numerical limit to how many users
-                it may be assigned.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "totalAssignmentsPermitted",
-                "type" : "integer",
-                "multiValued" : false,
-                "description" : "An integer that specifies how many
-                resources in total may be granted this entitlement.",
-                "required" : true,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            },
-            {
-                "name" : "totalAssignmentsUsed",
-                "type" : "integer",
-                "multiValued" : false,
-                "description" : "An integer that specifies how many
-                resources in total have been granted this
-                entitlement.",
-                "required" : true,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default"
-            }
-        ]
-    }
-]
-
-~~~
---- back
-
-# IANA Considerations
-
-(To-Do)
-
-
-# Change Log
-
-v00 - December 2022 - Adopted by SCIM WG.
-
-
-# Acknowledgments
-{:numbered="false"}
-
-TODO acknowledge.
