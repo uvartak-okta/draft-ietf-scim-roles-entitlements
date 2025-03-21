@@ -34,14 +34,14 @@ informative:
 
 --- abstract
 
-The System for Cross-domain Identity Management (SCIM) protocol's schema RFC [[RFC7643]] defines the complex core schema attributes "roles" and "entitlements". For both of these concepts, frequently only a predetermined set of values are accepted by a SCIM service provider. The values that are accepted may vary per customer or tenant based on customizable configuration in the service provider's application or based on other criteria such as what services have been purchased. This document defines an extension to the SCIM 2.0 standard to allow SCIM service providers to represent available data pertaining to roles and entitlements so that SCIM clients can consume this information and provide easier management of role and entitlement assignments.
+The System for Cross-domain Identity Management (SCIM) protocol's schema RFC {{RFC7643}} defines the complex core schema attributes "roles" and "entitlements". For both of these concepts, frequently only a predetermined set of values are accepted by a SCIM service provider. The values that are accepted may vary per customer or tenant based on customizable configuration in the service provider's application or based on other criteria such as what services have been purchased. This document defines an extension to the SCIM 2.0 standard to allow SCIM service providers to represent available data pertaining to roles and entitlements so that SCIM clients can consume this information and provide easier management of role and entitlement assignments.
 
 
 --- middle
 
 # Introduction
 
-The System for Cross-domain Identity Management (SCIM) protocol's schema RFC [[RFC7643]] defines the complex core schema attributes "roles" and "entitlements". For both of these concepts, frequently only a predetermined set of values are accepted by a SCIM service provider. Available roles and entitlements may change based on a variety of factors, such as what features are enabled or what customizations have been made in a specific instance of a multi-tenant application. The core SCIM 2.0 RFC documents ([[RFC7642]], [[RFC7643]] and [[RFC7644]]) do not provide a method for retrieving the available roles or entitlements as part of the SCIM 2.0 standard.
+The System for Cross-domain Identity Management (SCIM) protocol's schema RFC {{RFC7643}} defines the complex core schema attributes "roles" and "entitlements". For both of these concepts, frequently only a predetermined set of values are accepted by a SCIM service provider. Available roles and entitlements may change based on a variety of factors, such as what features are enabled or what customizations have been made in a specific instance of a multi-tenant application. The core SCIM 2.0 RFC documents ({{RFC7642}}, {{RFC7643}} and {{RFC7644}}) do not provide a method for retrieving the available roles or entitlements as part of the SCIM 2.0 standard.
 
 In order to allow for SCIM clients to avoid easily predictable errors when interacting with SCIM service providers, this document aims to provide a method for SCIM service providers to provide data on what roles and/or entitlements are available so that SCIM clients can consume this data to more efficiently manage resources between directories.
 
@@ -117,7 +117,7 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
 
 ## Roles Resource Schema
 
-The `/Roles` resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "roles" in [[RFC7643]], as well as an additional "supported" attribute so that SCIM service providers can indicate if the role is currently enabled and intended for use in their service. The following singular attributes are defined:
+The `/Roles` resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "roles" in {{RFC7643}}, as well as an additional "supported" attribute so that SCIM service providers can indicate if the role is currently enabled and intended for use in their service. The following singular attributes are defined:
 
     id
       A unique identifier for the role as defined by the service
@@ -173,7 +173,7 @@ Additionally, the following multi-valued attributes are defined:
 
 ## Entitlements Resource Schema
 
-The `/Entitlements` resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "entitlements" in [[RFC7643]], as well as an additional "supported" attribute so that SCIM service providers can indicate if the entitlement is currently enabled and intended for use in their service.
+The `/Entitlements` resource type has a schema consisting of most of the attributes defined for the User resource's complex attribute "entitlements" in {{RFC7643}}, as well as an additional "supported" attribute so that SCIM service providers can indicate if the entitlement is currently enabled and intended for use in their service.
 
 The following singular attributes are defined:
 
