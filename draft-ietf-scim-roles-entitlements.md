@@ -775,5 +775,4 @@ Additionally, the following multi-valued attributes are defined:
   "https://example.com/v2/Users/2819c223-7f76-453a-919d-413861904646"
     }
   }
-```
 
