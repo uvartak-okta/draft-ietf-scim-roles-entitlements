@@ -817,7 +817,17 @@ Sample schema extension for an Entitlement property
 
 # Change Log
 
-v00 - December 2022 - Adopted by SCIM WG.
+-01
+
+* Added root schema definition for Role and Entitlements properties
+* Added `id` attribute to allow service providers to uniquely identify roles and entitlements
+* Defines custom namespace for SPs to define their own schema extensions
+* Added examples of requests and responses
+* Added Unmesh Vartak as co-author
+
+-00
+
+* Adopted by SCIM WG
 
 
 # Acknowledgments
