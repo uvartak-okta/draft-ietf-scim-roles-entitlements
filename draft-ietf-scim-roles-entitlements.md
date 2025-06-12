@@ -65,7 +65,7 @@ The Roles and Entitlements SCIM Extension consists of two new resource types, `/
 
 ## ServiceProviderConfig Extension
 
-SCIM endpoints that have implemented one or both of the endpoints from this extension MUST advertise which elements are implemented in the ServiceProviderConfig endpoint as defined:
+SCIM endpoints that have implemented one or both of the endpoints from this extension MUST advertise which elements are implemented in the [ServiceProviderConfig](https://datatracker.ietf.org/doc/html/rfc7643#section-5) endpoint as defined:
 
     RolesAndEntitlements
         A complex type that specifies Roles and Entitlements extension
