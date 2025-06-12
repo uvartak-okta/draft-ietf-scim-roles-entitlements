@@ -44,6 +44,16 @@ The System for Cross-domain Identity Management (SCIM) protocol's schema RFC {{R
 
 In order to allow for SCIM clients to reduce predictable errors when interacting with SCIM service providers, this document aims to provide a method for SCIM service providers to provide data on what roles and/or entitlements are available so that SCIM clients can consume this data to more efficiently manage resources between directories.
 
+### Consuming Roles and Entitlements with SCIM Clients
+
+When a SCIM service provider publishes role and entitlement definitions, SCIM clients can consume them efficiently. The process generally follows these steps:
+
+1. Check Provider Support: Check the [ServiceProviderConfig Extension](#serviceproviderconfig-extension) for support for roles and entitlements.
+2. Discover ResourceTypes: Query the /ResourceTypes endpoint to discover which standard and custom role and entitlement [resource types](#resource-type-representation) are supported.
+3. Discover schemas for ResourceTypes: Fetch the corresponding [schemas](#schema-samples) from the /Schemas endpoint, matching them with the ResourceType URNs.
+4. Consume [resource-specific endpoints](#sample-roles-and-entitlements-resource-endpoints) to retrieve the actual supported values for these defined resource types.
+
+
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
@@ -280,7 +290,7 @@ Sample Role and Entitlement resourceTypes with ApplicationRoles and License as c
              }
     }]
 
-Important:
+**Important:**
 
 The root schema are `urn:ietf:params:scim:schemas:core:2.0:Role` and `urn:ietf:params:scim:schemas:core:2.0:Entitlement`.
 
@@ -930,18 +940,6 @@ Sample schema for entitlement property
         }
       }
     }
-
-### Consuming Roles and Entitlements with SCIM Clients
-When a SCIM service provider publishes role and entitlement definitions, SCIM clients can consume them efficiently. The process generally follows these steps:
-
-Provider Support: Check the ServiceProviderConfig extension for support for roles and entitlements.
-
-Discover ResourceTypes: Query the /ResourceTypes endpoint to discover which standard and custom role and entitlement resource types are supported.
-
-Discover schemas for ResourceTypes: Fetch the corresponding schemas from the /Schemas endpoint, matching them with the ResourceType URNs.
-
-Consume resource-specific endpoints to retrieve the actual supported values for these defined resource types.
-
 ~~~
 --- back
 
@@ -959,6 +957,7 @@ Consume resource-specific endpoints to retrieve the actual supported values for 
 * Defines custom namespace for SPs to define their own schema extensions
 * Added examples of requests and responses
 * Added Unmesh Vartak as co-author
+* Using schema version 2.0 for roles and entitlements schemas: urn:ietf:params:scim:schemas:core:2.0:Role and urn:ietf:params:scim:schemas:core:2.0:Entitlement
 
 -00
 
