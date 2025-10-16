@@ -270,14 +270,6 @@ The `Subresources` is complex attribute containing following sub-attributes:
     type
         The SCIM Resource Type of the referenced resource. OPTIONAL.
 
-Additionally, the following multi-valued attributes are defined:
-
-    containedBy
-        A list of "parent" resource that holds this subresource.
-        OPTIONAL.
-
-    contains
-        A list of "child" subresources that are contained by this subresource.  OPTIONAL.
 
 
 ### Schema samples
