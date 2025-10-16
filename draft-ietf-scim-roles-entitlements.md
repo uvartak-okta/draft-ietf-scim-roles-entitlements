@@ -45,7 +45,7 @@ The System for Cross-domain Identity Management (SCIM) protocol's schema RFC {{R
 
 In order to allow for SCIM clients to reduce predictable errors when interacting with SCIM service providers, this document aims to provide a method for SCIM service providers to provide data on what roles and/or entitlements are available, the association between roles and/or entitlements and specific resources so that SCIM clients can consume this data to more efficiently manage resources between directories.
 
-### Consuming Roles and Entitlements with SCIM Clients
+## Consuming Roles and Entitlements with SCIM Clients
 
 When a SCIM service provider publishes role and entitlement definitions, SCIM clients can consume them efficiently. The process generally follows these steps:
 
