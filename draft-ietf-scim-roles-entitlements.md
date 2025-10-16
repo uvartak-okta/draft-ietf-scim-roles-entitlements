@@ -97,7 +97,7 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
                 the "roles" attribute on the User resource. OPTIONAL.
            
             types
-                A multivalue attribute containing list of types supported for "roles" 
+                A multivalue attribute containing list of types supported for "roles"
                 attribute on the User resource. OPTIONAL.
 
         entitlements
