@@ -155,7 +155,6 @@ The `/Role` resource type has a schema consisting of most of the attributes defi
 
     type
         A label indicating the role's function.  OPTIONAL
-    
     supported
         A boolean type that indicates if the role is supported and usable
         in the SCIM service provider's system.  REQUIRED.
