@@ -515,7 +515,7 @@ Sample schema for entitlement property
                 "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default",
-                "uniqueness" : "none"   
+                "uniqueness" : "none"
             }
         ]
     }
