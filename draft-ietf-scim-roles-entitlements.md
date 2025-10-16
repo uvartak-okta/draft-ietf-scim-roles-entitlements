@@ -379,7 +379,7 @@ Sample schema for a Role property
                 "caseExact" : false,
                 "mutability" : "readOnly",
                 "returned" : "default",
-                "uniqueness" : "none"   
+                "uniqueness" : "none"
             }
         ]
     }
