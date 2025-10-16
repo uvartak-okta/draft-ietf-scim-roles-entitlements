@@ -50,7 +50,7 @@ In order to allow for SCIM clients to reduce predictable errors when interacting
 When a SCIM service provider publishes role and entitlement definitions, SCIM clients can consume them efficiently. The process generally follows these steps:
 
 1. Check Provider Support: Check the [ServiceProviderConfig Extension](#serviceproviderconfig-extension) for support for roles and entitlements and the resources associated with roles or entitlements.
-2. Discover ResourceTypes: Query the /ResourceTypes endpoint to discover which standard and custom role and entitlement [resource types](#resource-type-representation) are supported.
+2. Discover ResourceTypes: Query the `/ResourceTypes` endpoint to discover which standard and custom role and entitlement [resource types](https://datatracker.ietf.org/doc/html/rfc7644#section-4) are supported.
 3. Discover schemas for ResourceTypes: Fetch the corresponding [schemas](#schema-samples) from the /Schemas endpoint, matching them with the ResourceType URNs.
 4. Consume [resource-specific endpoints](#sample-roles-and-entitlements-resource-endpoints) to retrieve the actual supported values for these defined resource types.
 
