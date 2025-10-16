@@ -95,7 +95,6 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
                 A boolean type that indicates if the SCIM service
                 provider supports the "type" sub-attribute for
                 the "roles" attribute on the User resource. OPTIONAL.
-           
             types
                 A multivalue attribute containing list of types supported for "roles"
                 attribute on the User resource. OPTIONAL.
