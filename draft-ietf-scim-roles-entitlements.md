@@ -128,7 +128,7 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
                 OPTIONAL.
 
             types
-                A multivalue attribute containing list of types supported for "entitlements" 
+                A multivalue attribute containing list of types supported for "entitlements"
                 attribute on the User resource. OPTIONAL.
 
 
