@@ -120,11 +120,6 @@ SCIM endpoints that have implemented one or both of the endpoints from this exte
                 the "entitlements" attribute on the User resource.
                 OPTIONAL.
 
-            subresourcesSupported
-                A boolean type that indicates if the SCIM service
-                provider supports the subresources sub-attribute for
-                the "entitlements" attribute on the User resource. OPTIONAL.
-
             typeSupported
                 A boolean type that indicates if the SCIM service
                 provider supports the "type" sub-attribute for
@@ -218,9 +213,6 @@ The following singular attributes are defined:
     type
         A label indicating the entitlement's function. OPTIONAL.
 
-    subresources
-        A complex type that describes subresources associated with this entitlement. OPTIONAL
-
     supported
         A boolean type that indicates if the entitlement is enabled
         and usable in the SCIM service provider's system. OPTIONAL.
@@ -252,24 +244,6 @@ Additionally, the following multi-valued attributes are defined:
     contains
         A list of "child" entitlements that this entitlement grants
         the rights of.  OPTIONAL.
-
-
-## Subresources
-
-The `Subresources` is complex attribute containing following sub-attributes:
-
-    value
-        The value of an subresource. REQUIRED.
-
-    "$ref" The URI of the referenced SCIM resource
-
-    display
-        A human-readable name, primarily used for display purposes.
-        OPTIONAL.
-
-    type
-        The SCIM Resource Type of the referenced resource. OPTIONAL.
-
 
 
 ### Schema samples
@@ -466,63 +440,6 @@ Sample schema for entitlement property
                 "uniqueness" : "none"
             },
             {
-                "name" : "subresources",
-                "type" : "complex",
-                "multiValued" : true,
-                "description" : "A list of SCIM resources associated with entitlement.",
-                "required" : false,
-                "caseExact" : false,
-                "mutability" : "readOnly",
-                "returned" : "default",
-                "uniqueness" : "none"
-                "subAttributes": [
-                    {
-                        "name": "value",
-                        "type": "string",
-                        "multiValued": false,
-                        "description": "The identifier of the referenced SCIM resource.",
-                        "required": true,
-                        "caseExact": false,
-                        "mutability": "readOnly",
-                        "returned": "default",
-                        "uniqueness": "none"
-                    },
-                    {
-                        "name": "$ref",
-                        "type": "reference",
-                        "multiValued": false,
-                        "description": "The URI of the referenced SCIM resource.",
-                        "required": false,
-                        "caseExact": false,
-                        "mutability": "readOnly",
-                        "returned": "default",
-                        "uniqueness": "none"
-                    },
-                    {
-                        "name": "display",
-                        "type": "string",
-                        "multiValued": false,
-                        "description": "A human-readable name of the referenced resource.",
-                        "required": false,
-                        "caseExact": false,
-                        "mutability": "readOnly",
-                        "returned": "default",
-                        "uniqueness": "none"
-                    },
-                    {
-                        "name": "type",
-                        "type": "string",
-                        "multiValued": false,
-                        "description": "The SCIM Resource Type of the referenced resource.",
-                        "required": true,
-                        "caseExact": false,
-                        "mutability": "readOnly",
-                        "returned": "default",
-                        "uniqueness": "none"
-                    }
-                ]
-            },
-            {
                 "name" : "primary",
                 "type" : "boolean",
                 "multiValued" : false,
@@ -678,7 +595,7 @@ Sample schema for entitlement property
     }
 
 
-#### Sample user representation with role and entitlement with subresource
+#### Sample user representation with role and entitlement
 
     {
         "schemas":
@@ -814,20 +731,6 @@ Sample schema for entitlement property
                 "value": "storage.limit_100gb",
                 "type": "ResourceLimit",
                 "display": "100 GB Repository Storage Limit",
-                "subresources":[ 
-                    {
-                        "value": "g-5555",
-                        "$ref": "/v2/repository/g-5555",
-                        "display": "Dev-Team-A Repository",
-                        "type": "repository" 
-                    },
-                    {
-                        "value": "g-5590",
-                        "$ref": "/v2/repository/g-5590",
-                        "display": "Dev-Team-B Repository",
-                        "type": "repository" 
-                    }
-                ]
           }
         ],
         "roles":[
