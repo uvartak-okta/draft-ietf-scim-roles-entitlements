@@ -17,7 +17,7 @@ author:
  -
     name: Danny Zollner
     organization: Microsoft
-    email: danny@zollnerd.com 
+    email: danny@zollnerd.com
 -
     name: Unmesh Vartak
     organization: Okta
